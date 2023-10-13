@@ -36,5 +36,11 @@ describe('ToolsRepository', () => {
         mechanicName: null
       }])
     })
+
+    it('should return empty list if it has no tools', async () => {
+      const result = await sut.list()
+
+      expect(result).toEqual([])
+    })
   })
 })
