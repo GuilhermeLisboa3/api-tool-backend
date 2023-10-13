@@ -18,6 +18,8 @@ export class UpdateStatusToolUseCase implements UpdateStatusTool {
     if (!tool) throw new NotFoundError('tool')
     if (status === 'available') {
       await this.toolRepository.update({ id: numberId, status, dateOfCollection: null, dateOfDevolution: null, mechanicName: null })
+      return undefined
     }
+    await this.toolRepository.update({ id: numberId, status })
   }
 }
