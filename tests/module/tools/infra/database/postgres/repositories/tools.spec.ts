@@ -43,4 +43,21 @@ describe('ToolsRepository', () => {
       expect(result).toEqual([])
     })
   })
+
+  describe('loadById()', () => {
+    it('should return tool on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status } })
+      const result = await sut.loadById({ id: 1 })
+
+      expect(result).toEqual({
+        id: 1,
+        name,
+        description,
+        status,
+        dateOfCollection: null,
+        dateOfDevolution: null,
+        mechanicName: null
+      })
+    })
+  })
 })
