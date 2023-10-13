@@ -16,9 +16,15 @@ export class ReserveToolUseCase implements ReserveTool {
     const tool = await this.toolRepository.loadById({ id: Number(id) })
     if (!tool) throw new NotFoundError('tool')
     const currentDate = new Date()
-    const dateOfCollectionTransform = new Date(dateOfCollection)
-    if (dateOfCollectionTransform < currentDate) {
+    const dateOfCollectionTransformData = new Date(dateOfCollection)
+    if (dateOfCollectionTransformData < currentDate) {
       throw new ValidationError('It is not possible to reserve a tool before the current date and time. Reserve a tool one hour after the current time.')
+    }
+    const dateOfDevolutionTransformData = new Date(dateOfDevolution)
+    const daysInMilliseconds = 1000 * 60 * 60 * 24
+    const millisecondDifference = dateOfDevolutionTransformData.getTime() - dateOfCollectionTransformData.getTime()
+    if (millisecondDifference / daysInMilliseconds > 15) {
+      throw new ValidationError('You can only reserve a tool for 15 days.')
     }
   }
 }
