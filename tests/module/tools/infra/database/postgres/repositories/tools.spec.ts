@@ -4,7 +4,7 @@ import prisma from '@/config/prisma'
 
 describe('ToolsRepository', () => {
   let sut: ToolsRepository
-  const { name, description, status } = toolsParams
+  const { name, description, status, dateOfCollection, dateOfDevolution, mechanicName } = toolsParams
 
   beforeEach(async () => {
     await resetDataBase()
@@ -76,6 +76,26 @@ describe('ToolsRepository', () => {
       const tool = await prisma.tool.findFirst({ where: { id: 1 } })
 
       expect(tool).toBeFalsy()
+    })
+  })
+
+  describe('update()', () => {
+    it('should update tool on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status: 'inUse', dateOfCollection, dateOfDevolution, mechanicName } })
+
+      await sut.update({ id: 1, dateOfCollection: null, dateOfDevolution: null, mechanicName: null, status: 'reserved' })
+
+      const tool = await prisma.tool.findFirst({ where: { id: 1 } })
+
+      expect(tool).toEqual({
+        id: 1,
+        name,
+        description,
+        dateOfCollection: null,
+        dateOfDevolution: null,
+        mechanicName: null,
+        status: 'reserved'
+      })
     })
   })
 })
