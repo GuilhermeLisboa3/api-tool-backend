@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { type CreateToolRepository, type ListToolsRepository, type LoadToolByIdRepository, type DeleteToolByIdRepository } from '@/module/tools/domain/contracts/database/tools'
+import { type CreateToolRepository, type ListToolsRepository, type LoadToolByIdRepository, type DeleteToolByIdRepository, type UpdateToolRepository } from '@/module/tools/domain/contracts/database/tools'
 import prisma from '@/config/prisma'
 
 @Injectable()
@@ -20,5 +20,12 @@ export class ToolsRepository implements CreateToolRepository, ListToolsRepositor
 
   async deleteById ({ id }: DeleteToolByIdRepository.Input): Promise<DeleteToolByIdRepository.Output> {
     await prisma.tool.delete({ where: { id } })
+  }
+
+  async update ({ id, name, description, status, dateOfCollection, dateOfDevolution, mechanicName }: UpdateToolRepository.Input): Promise<UpdateToolRepository.Output> {
+    await prisma.tool.update({
+      where: { id },
+      data: { id, name, description, status, dateOfCollection, dateOfDevolution, mechanicName }
+    })
   }
 }
