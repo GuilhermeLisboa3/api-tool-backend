@@ -19,7 +19,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     if (exception instanceof BadRequestException) {
-      message = { error: exception.getResponse() }
+      message = exception.getResponse()
       status = HttpStatus.BAD_REQUEST
     }
 

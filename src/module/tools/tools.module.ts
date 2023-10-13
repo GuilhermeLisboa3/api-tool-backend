@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common'
 import { ToolsController } from '@/module/tools/controllers/tools.controller'
 import { ToolsRepository } from '@/module/tools/infra/database/postgres/repositories'
-import { AddTool, AddToolUseCase, DeleteToolById, DeleteToolByIdUseCase, ListTools, ListToolsUseCase, LoadToolById, LoadToolByIdUseCase } from '@/module/tools/domain/use-cases/'
+import {
+  AddTool, AddToolUseCase,
+  DeleteToolById, DeleteToolByIdUseCase,
+  ListTools, ListToolsUseCase,
+  LoadToolById, LoadToolByIdUseCase,
+  UpdateStatusTool, UpdateStatusToolUseCase
+} from '@/module/tools/domain/use-cases/'
 
 @Module({
   controllers: [ToolsController],
@@ -21,6 +27,10 @@ import { AddTool, AddToolUseCase, DeleteToolById, DeleteToolByIdUseCase, ListToo
     {
       provide: DeleteToolById,
       useClass: DeleteToolByIdUseCase
+    },
+    {
+      provide: UpdateStatusTool,
+      useClass: UpdateStatusToolUseCase
     },
     {
       provide: 'repository',

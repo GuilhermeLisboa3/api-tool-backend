@@ -1,7 +1,7 @@
-import { AddToolDto } from './dto'
-import { AddTool, DeleteToolById, ListTools, LoadToolById } from '../domain/use-cases'
+import { AddToolDto, UpdateStatusToolDto } from './dto'
+import { AddTool, DeleteToolById, ListTools, LoadToolById, UpdateStatusTool } from '../domain/use-cases'
 
-import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common'
 import { type Response } from 'express'
 
 @Controller('')
@@ -10,7 +10,8 @@ export class ToolsController {
     private readonly addTool: AddTool,
     private readonly listTools: ListTools,
     private readonly loadToolById: LoadToolById,
-    private readonly deleteToolById: DeleteToolById
+    private readonly deleteToolById: DeleteToolById,
+    private readonly updateStatusTool: UpdateStatusTool
   ) {}
 
   @Post('register')
@@ -34,6 +35,12 @@ export class ToolsController {
   @Delete('tool/:id')
   async deleteById (@Res() res: Response, @Param('id') id: string): Promise<Response> {
     await this.deleteToolById.delete({ id })
+    return res.status(204).json(null)
+  }
+
+  @Put('tool/:id')
+  async updateStatus (@Res() res: Response, @Param('id') id: string, @Body() input: UpdateStatusToolDto): Promise<Response> {
+    await this.updateStatusTool.update({ ...input, id })
     return res.status(204).json(null)
   }
 }
