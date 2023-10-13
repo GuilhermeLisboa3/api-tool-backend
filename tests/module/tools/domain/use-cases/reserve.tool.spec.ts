@@ -40,4 +40,10 @@ describe('ReserveToolUseCase', () => {
 
     await expect(promise).rejects.toThrow(new ValidationError('It is not possible to reserve a tool before the current date and time. Reserve a tool one hour after the current time.'))
   })
+
+  it('should throw ValidationError if dateOfCollection and dateOfDevolution pass 15 days', async () => {
+    const promise = sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution: '2023-10-30', mechanicName })
+
+    await expect(promise).rejects.toThrow(new ValidationError('You can only reserve a tool for 15 days.'))
+  })
 })
