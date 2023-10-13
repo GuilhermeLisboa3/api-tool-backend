@@ -3,7 +3,7 @@ import { ToolsModule } from '@/module/tools/tools.module'
 
 import * as request from 'supertest'
 import { Test } from '@nestjs/testing'
-import { type INestApplication } from '@nestjs/common'
+import { ValidationPipe, type INestApplication } from '@nestjs/common'
 
 describe('Tools Route', () => {
   let app: INestApplication
@@ -20,6 +20,7 @@ describe('Tools Route', () => {
       .compile()
 
     app = moduleRef.createNestApplication()
+    app.useGlobalPipes(new ValidationPipe())
     await app.init()
   })
 
@@ -28,6 +29,14 @@ describe('Tools Route', () => {
   })
 
   describe('/POST register', () => {
+    it('should return 400 if has invalid data', async () => {
+      const { status } = await request(app.getHttpServer())
+        .post('/register')
+        .send({ name })
+
+      expect(status).toBe(400)
+    })
+
     it('should return 201 on success', async () => {
       const { status } = await request(app.getHttpServer())
         .post('/register')
