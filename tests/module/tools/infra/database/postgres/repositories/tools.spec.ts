@@ -59,5 +59,11 @@ describe('ToolsRepository', () => {
         mechanicName: null
       })
     })
+
+    it('should return undefined if tool not exist', async () => {
+      const result = await sut.loadById({ id: 1 })
+
+      expect(result).toBeUndefined()
+    })
   })
 })
