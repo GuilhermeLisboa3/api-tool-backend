@@ -18,4 +18,10 @@ describe('AddToolUseCase', () => {
     expect(toolsRepository.create).toHaveBeenCalledWith({ name, description })
     expect(toolsRepository.create).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut.add({ name, description })
+
+    expect(result).toBeUndefined()
+  })
 })
