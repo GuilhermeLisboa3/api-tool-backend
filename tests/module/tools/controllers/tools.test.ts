@@ -65,4 +65,24 @@ describe('Tools Route', () => {
       }])
     })
   })
+
+  describe('/GET tool/:id', () => {
+    it('should return 200 on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status: Status } })
+      const { status, body } = await request(app.getHttpServer())
+        .get('/tool/1')
+        .send({ name })
+
+      expect(status).toBe(200)
+      expect(body).toEqual({
+        id: 1,
+        name,
+        description,
+        status: Status,
+        dateOfCollection: null,
+        dateOfDevolution: null,
+        mechanicName: null
+      })
+    })
+  })
 })
