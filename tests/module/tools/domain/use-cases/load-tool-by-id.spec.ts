@@ -32,4 +32,10 @@ describe('LoadToolByIdUseCase', () => {
 
     await expect(promise).rejects.toThrow(new NotFoundError('tool'))
   })
+
+  it('should return tool on success', async () => {
+    const result = await sut.loadById({ id: StringId })
+
+    expect(result).toEqual({ id, name, dateOfCollection, dateOfDevolution, description, mechanicName, status })
+  })
 })
