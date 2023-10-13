@@ -47,4 +47,10 @@ describe('UpdateStatusToolUseCase', () => {
     expect(toolsRepository.update).toHaveBeenCalledWith({ id, status: 'inUse' })
     expect(toolsRepository.update).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut.update({ id: StringId, status: 'inUse' })
+
+    expect(result).toBeUndefined()
+  })
 })
