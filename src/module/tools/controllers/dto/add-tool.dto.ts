@@ -1,4 +1,11 @@
+import { IsNotEmpty, IsString } from 'class-validator'
+
 export class AddToolDto {
-  name: string
-  description: string
+  @IsNotEmpty()
+  @IsString()
+    name: string
+
+  @IsNotEmpty()
+  @IsString()
+    description: string
 }
