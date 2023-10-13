@@ -10,7 +10,9 @@ import { ValidationPipe, type INestApplication } from '@nestjs/common'
 
 describe('Tools Route', () => {
   let app: INestApplication
-  const { name, description, status: Status } = toolsParams
+  const { name, description, status: Status, mechanicName } = toolsParams
+  const dateOfCollection = '2023-10-14'
+  const dateOfDevolution = '2023-10-28'
 
   beforeEach(async () => {
     await resetDataBase()
@@ -131,6 +133,17 @@ describe('Tools Route', () => {
 
       expect(status).toBe(404)
       expect(error).toEqual(new NotFoundError('tool').message)
+    })
+  })
+
+  describe('/PUT reserve/tool/:id', () => {
+    it('should return 204 on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status: Status } })
+      const { status } = await request(app.getHttpServer())
+        .put('/reserve/tool/1')
+        .send({ dateOfCollection, dateOfDevolution, mechanicName })
+
+      expect(status).toBe(204)
     })
   })
 })
