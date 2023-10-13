@@ -40,4 +40,11 @@ describe('UpdateStatusToolUseCase', () => {
     expect(toolsRepository.update).toHaveBeenCalledWith({ id, status: 'available', dateOfCollection: null, dateOfDevolution: null, mechanicName: null })
     expect(toolsRepository.update).toHaveBeenCalledTimes(1)
   })
+
+  it('should call UpdateToolRepository with correct values', async () => {
+    await sut.update({ id: StringId, status: 'inUse' })
+
+    expect(toolsRepository.update).toHaveBeenCalledWith({ id, status: 'inUse' })
+    expect(toolsRepository.update).toHaveBeenCalledTimes(1)
+  })
 })
