@@ -1,3 +1,4 @@
+import { NotFoundError } from '@/common/errors'
 import { type LoadToolByIdRepository } from '../contracts/database/tools'
 import { Inject, Injectable } from '@nestjs/common'
 
@@ -12,6 +13,7 @@ export class DeleteToolByIdUseCase implements DeleteToolById {
   constructor (@Inject('repository') private readonly toolRepository: LoadToolByIdRepository) {}
 
   async delete ({ id }: Input): Promise<Output> {
-    await this.toolRepository.loadById({ id: Number(id) })
+    const tool = await this.toolRepository.loadById({ id: Number(id) })
+    if (!tool) throw new NotFoundError('tool')
   }
 }
