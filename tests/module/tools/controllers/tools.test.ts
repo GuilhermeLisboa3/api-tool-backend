@@ -113,4 +113,15 @@ describe('Tools Route', () => {
       expect(error).toEqual(new NotFoundError('tool').message)
     })
   })
+
+  describe('/PUT tool/:id', () => {
+    it('should return 204 on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status: Status } })
+      const { status } = await request(app.getHttpServer())
+        .put('/tool/1')
+        .send({ status: 'inUse' })
+
+      expect(status).toBe(204)
+    })
+  })
 })
