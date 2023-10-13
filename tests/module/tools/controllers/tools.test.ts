@@ -1,6 +1,8 @@
 import { resetDataBase, toolsParams } from '@/tests/mocks'
 import { ToolsModule } from '@/module/tools/tools.module'
 import prisma from '@/config/prisma'
+import { NotFoundError } from '@/common/errors'
+import { AllExceptionsFilter } from '@/common/filters'
 
 import * as request from 'supertest'
 import { Test } from '@nestjs/testing'
@@ -22,6 +24,7 @@ describe('Tools Route', () => {
 
     app = moduleRef.createNestApplication()
     app.useGlobalPipes(new ValidationPipe())
+    app.useGlobalFilters(new AllExceptionsFilter())
     await app.init()
   })
 
@@ -71,7 +74,6 @@ describe('Tools Route', () => {
       await prisma.tool.create({ data: { id: 1, name, description, status: Status } })
       const { status, body } = await request(app.getHttpServer())
         .get('/tool/1')
-        .send({ name })
 
       expect(status).toBe(200)
       expect(body).toEqual({
@@ -83,6 +85,14 @@ describe('Tools Route', () => {
         dateOfDevolution: null,
         mechanicName: null
       })
+    })
+
+    it('should return 404 if tool not exists', async () => {
+      const { status, body: { error } } = await request(app.getHttpServer())
+        .get('/tool/1')
+
+      expect(status).toBe(404)
+      expect(error).toEqual(new NotFoundError('tool').message)
     })
   })
 })
