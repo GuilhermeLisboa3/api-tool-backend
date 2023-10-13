@@ -95,4 +95,14 @@ describe('Tools Route', () => {
       expect(error).toEqual(new NotFoundError('tool').message)
     })
   })
+
+  describe('/DELETE tool/:id', () => {
+    it('should return 204 on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status: Status } })
+      const { status } = await request(app.getHttpServer())
+        .delete('/tool/1')
+
+      expect(status).toBe(204)
+    })
+  })
 })
