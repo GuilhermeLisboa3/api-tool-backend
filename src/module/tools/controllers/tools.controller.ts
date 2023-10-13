@@ -1,8 +1,9 @@
 import { AddToolDto, UpdateStatusToolDto } from './dto'
-import { AddTool, DeleteToolById, ListTools, LoadToolById, UpdateStatusTool } from '../domain/use-cases'
+import { AddTool, DeleteToolById, ListTools, LoadToolById, ReserveTool, UpdateStatusTool } from '../domain/use-cases'
 
 import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common'
 import { type Response } from 'express'
+import { ReserveToolDto } from './dto/reserve-tool'
 
 @Controller('')
 export class ToolsController {
@@ -11,7 +12,8 @@ export class ToolsController {
     private readonly listTools: ListTools,
     private readonly loadToolById: LoadToolById,
     private readonly deleteToolById: DeleteToolById,
-    private readonly updateStatusTool: UpdateStatusTool
+    private readonly updateStatusTool: UpdateStatusTool,
+    private readonly reserveTool: ReserveTool
   ) {}
 
   @Post('register')
@@ -41,6 +43,12 @@ export class ToolsController {
   @Put('tool/:id')
   async updateStatus (@Res() res: Response, @Param('id') id: string, @Body() input: UpdateStatusToolDto): Promise<Response> {
     await this.updateStatusTool.update({ ...input, id })
+    return res.status(204).json(null)
+  }
+
+  @Put('reserve/tool/:id')
+  async reserve (@Res() res: Response, @Param('id') id: string, @Body() input: ReserveToolDto): Promise<Response> {
+    await this.reserveTool.reserveTool({ ...input, id })
     return res.status(204).json(null)
   }
 }

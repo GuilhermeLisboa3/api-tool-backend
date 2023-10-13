@@ -6,7 +6,8 @@ import {
   DeleteToolById, DeleteToolByIdUseCase,
   ListTools, ListToolsUseCase,
   LoadToolById, LoadToolByIdUseCase,
-  UpdateStatusTool, UpdateStatusToolUseCase
+  UpdateStatusTool, UpdateStatusToolUseCase,
+  ReserveTool, ReserveToolUseCase
 } from '@/module/tools/domain/use-cases/'
 
 @Module({
@@ -31,6 +32,10 @@ import {
     {
       provide: UpdateStatusTool,
       useClass: UpdateStatusToolUseCase
+    },
+    {
+      provide: ReserveTool,
+      useClass: ReserveToolUseCase
     },
     {
       provide: 'repository',

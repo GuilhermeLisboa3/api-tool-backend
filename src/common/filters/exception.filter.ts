@@ -3,7 +3,7 @@ import {
   Catch,
   type ArgumentsHost, type HttpException, HttpStatus, BadRequestException
 } from '@nestjs/common'
-import { NotFoundError, ServerError } from '../errors'
+import { NotFoundError, ServerError, ValidationError } from '../errors'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -16,6 +16,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof NotFoundError) {
       message = { error: exception.message }
       status = HttpStatus.NOT_FOUND
+    }
+
+    if (exception instanceof ValidationError) {
+      message = { error: exception.message }
+      status = HttpStatus.BAD_REQUEST
     }
 
     if (exception instanceof BadRequestException) {
