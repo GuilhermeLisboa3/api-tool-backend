@@ -53,4 +53,10 @@ describe('ReserveToolUseCase', () => {
     expect(toolsRepository.update).toHaveBeenCalledWith({ id, dateOfCollection: new Date(dateOfCollection), dateOfDevolution: new Date(dateOfDevolution), mechanicName, status: 'reserved' })
     expect(toolsRepository.update).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution, mechanicName })
+
+    expect(result).toBeUndefined()
+  })
 })
