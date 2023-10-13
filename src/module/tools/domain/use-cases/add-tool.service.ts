@@ -10,7 +10,7 @@ export abstract class AddTool {
 export class AddToolUseCase implements AddTool {
   constructor (private readonly toolsRepository: CreateToolRepository) {}
 
-  async add (input: Input): Promise<void> {
+  async add (input: Input): Promise<Output> {
     await this.toolsRepository.create(input)
   }
 }
