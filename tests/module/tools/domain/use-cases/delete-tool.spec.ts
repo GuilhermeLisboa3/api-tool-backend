@@ -39,4 +39,10 @@ describe('DeleteToolUseCase', () => {
     expect(toolsRepository.deleteById).toHaveBeenCalledWith({ id })
     expect(toolsRepository.deleteById).toHaveBeenCalledTimes(1)
   })
+
+  it('should return undefined on success', async () => {
+    const result = await sut.delete({ id: StringId })
+
+    expect(result).toBeUndefined()
+  })
 })
