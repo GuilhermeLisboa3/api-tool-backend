@@ -1,3 +1,4 @@
+import { Inject, Injectable } from '@nestjs/common'
 import { type CreateToolRepository } from '../contracts/database/tools'
 
 type Input = { name: string, description: string }
@@ -7,8 +8,9 @@ export abstract class AddTool {
   abstract add (input: Input): Promise<Output>
 }
 
+@Injectable()
 export class AddToolUseCase implements AddTool {
-  constructor (private readonly toolsRepository: CreateToolRepository) {}
+  constructor (@Inject('repository') private readonly toolsRepository: CreateToolRepository) {}
 
   async add (input: Input): Promise<Output> {
     await this.toolsRepository.create(input)
