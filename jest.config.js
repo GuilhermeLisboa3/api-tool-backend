@@ -13,5 +13,6 @@ module.exports = {
   transform: {
     '\\.ts$': 'ts-jest'
   },
+  testEnvironment: './tests/config/mocks/setup-prisma.ts',
   clearMocks: true
 }
