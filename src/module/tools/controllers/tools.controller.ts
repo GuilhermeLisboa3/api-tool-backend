@@ -1,7 +1,7 @@
 import { AddToolDto } from './dto'
-import { AddTool, ListTools, LoadToolById } from '../domain/use-cases'
+import { AddTool, DeleteToolById, ListTools, LoadToolById } from '../domain/use-cases'
 
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common'
 import { type Response } from 'express'
 
 @Controller('')
@@ -9,7 +9,8 @@ export class ToolsController {
   constructor (
     private readonly addTool: AddTool,
     private readonly listTools: ListTools,
-    private readonly loadToolById: LoadToolById
+    private readonly loadToolById: LoadToolById,
+    private readonly deleteToolById: DeleteToolById
   ) {}
 
   @Post('register')
@@ -28,5 +29,11 @@ export class ToolsController {
   async loadById (@Res() res: Response, @Param('id') id: string): Promise<Response> {
     const result = await this.loadToolById.loadById({ id })
     return res.status(200).json(result)
+  }
+
+  @Delete('tool/:id')
+  async deleteById (@Res() res: Response, @Param('id') id: string): Promise<Response> {
+    await this.deleteToolById.delete({ id })
+    return res.status(204).json(null)
   }
 }
