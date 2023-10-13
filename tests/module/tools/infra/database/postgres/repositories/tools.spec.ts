@@ -15,9 +15,9 @@ describe('ToolsRepository', () => {
     it('should create a tools on success', async () => {
       await sut.create({ name, description })
 
-      const user = await prisma.tool.findFirst({ where: { name } })
+      const tool = await prisma.tool.findFirst({ where: { name } })
 
-      expect(user).toBeTruthy()
+      expect(tool).toBeTruthy()
     })
   })
 
@@ -64,6 +64,18 @@ describe('ToolsRepository', () => {
       const result = await sut.loadById({ id: 1 })
 
       expect(result).toBeUndefined()
+    })
+  })
+
+  describe('deleteById()', () => {
+    it('should delete tool on success', async () => {
+      await prisma.tool.create({ data: { id: 1, name, description, status } })
+
+      await sut.deleteById({ id: 1 })
+
+      const tool = await prisma.tool.findFirst({ where: { id: 1 } })
+
+      expect(tool).toBeFalsy()
     })
   })
 })
