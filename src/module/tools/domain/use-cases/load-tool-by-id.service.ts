@@ -3,7 +3,15 @@ import { type LoadToolByIdRepository } from '../contracts/database/tools'
 import { Inject, Injectable } from '@nestjs/common'
 
 type Input = { id: string }
-type Output = void
+type Output = {
+  id: number
+  name: string
+  description: string
+  status: string
+  dateOfCollection: Date
+  dateOfDevolution: Date
+  mechanicName: string
+}
 export abstract class LoadToolById {
   abstract loadById (input: Input): Promise<Output>
 }
@@ -15,5 +23,6 @@ export class LoadToolByIdUseCase implements LoadToolById {
   async loadById ({ id }: Input): Promise<Output> {
     const tool = await this.toolRepository.loadById({ id: Number(id) })
     if (!tool) throw new NotFoundError('tool')
+    return tool
   }
 }
