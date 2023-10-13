@@ -1,12 +1,12 @@
 import { type ReserveTool, ReserveToolUseCase } from '@/module/tools/domain/use-cases'
 import { toolsParams } from '@/tests/mocks'
 import { mock } from 'jest-mock-extended'
-import { type LoadToolByIdRepository } from '@/module/tools/domain/contracts/database/tools'
+import { type LoadToolByIdRepository, type UpdateToolRepository } from '@/module/tools/domain/contracts/database/tools'
 import { NotFoundError, ValidationError } from '@/common/errors'
 
 describe('ReserveToolUseCase', () => {
   let sut: ReserveTool
-  const toolsRepository = mock<LoadToolByIdRepository >()
+  const toolsRepository = mock<LoadToolByIdRepository & UpdateToolRepository>()
   const { id, mechanicName, name, description, status } = toolsParams
   const dateOfCollection = '2023-10-14'
   const dateOfDevolution = '2023-10-28'
@@ -45,5 +45,12 @@ describe('ReserveToolUseCase', () => {
     const promise = sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution: '2023-10-30', mechanicName })
 
     await expect(promise).rejects.toThrow(new ValidationError('You can only reserve a tool for 15 days.'))
+  })
+
+  it('should call UpdateToolRepository with correct values', async () => {
+    await sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution, mechanicName })
+
+    expect(toolsRepository.update).toHaveBeenCalledWith({ id, dateOfCollection: new Date(dateOfCollection), dateOfDevolution: new Date(dateOfDevolution), mechanicName, status: 'reserved' })
+    expect(toolsRepository.update).toHaveBeenCalledTimes(1)
   })
 })
