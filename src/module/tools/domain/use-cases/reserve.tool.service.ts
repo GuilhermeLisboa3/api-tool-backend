@@ -1,5 +1,5 @@
 import { NotFoundError, ValidationError } from '@/common/errors'
-import { type LoadToolByIdRepository } from '../contracts/database/tools'
+import { type UpdateToolRepository, type LoadToolByIdRepository } from '../contracts/database/tools'
 import { Inject, Injectable } from '@nestjs/common'
 
 type Input = { id: string, dateOfCollection: string, dateOfDevolution: string, mechanicName: string }
@@ -10,10 +10,11 @@ export abstract class ReserveTool {
 
 @Injectable()
 export class ReserveToolUseCase implements ReserveTool {
-  constructor (@Inject('repository') private readonly toolRepository: LoadToolByIdRepository) {}
+  constructor (@Inject('repository') private readonly toolRepository: LoadToolByIdRepository & UpdateToolRepository) {}
 
   async reserveTool ({ id, dateOfCollection, dateOfDevolution, mechanicName }: Input): Promise<Output> {
-    const tool = await this.toolRepository.loadById({ id: Number(id) })
+    const numberId = Number(id)
+    const tool = await this.toolRepository.loadById({ id: numberId })
     if (!tool) throw new NotFoundError('tool')
     const currentDate = new Date()
     const dateOfCollectionTransformData = new Date(dateOfCollection)
@@ -26,5 +27,12 @@ export class ReserveToolUseCase implements ReserveTool {
     if (millisecondDifference / daysInMilliseconds > 15) {
       throw new ValidationError('You can only reserve a tool for 15 days.')
     }
+    await this.toolRepository.update({
+      id: numberId,
+      status: 'reserved',
+      dateOfCollection: dateOfCollectionTransformData,
+      dateOfDevolution: dateOfDevolutionTransformData,
+      mechanicName
+    })
   }
 }
