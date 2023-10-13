@@ -123,5 +123,14 @@ describe('Tools Route', () => {
 
       expect(status).toBe(204)
     })
+
+    it('should return 404 if tool not exists', async () => {
+      const { status, body: { error } } = await request(app.getHttpServer())
+        .put('/tool/1')
+        .send({ status: 'inUse' })
+
+      expect(status).toBe(404)
+      expect(error).toEqual(new NotFoundError('tool').message)
+    })
   })
 })
