@@ -1,6 +1,6 @@
 {
-  "name": "kronoos",
-  "version": "1.4.0",
+  "name": "api-tool",
+  "version": "1.5.0",
   "description": "",
   "main": "index.js",
   "scripts": {
