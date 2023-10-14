@@ -139,11 +139,10 @@ describe('Tools Route', () => {
   describe('/PUT reserve/tool/:id', () => {
     it('should return 204 on success', async () => {
       await prisma.tool.create({ data: { id: 1, name, description, status: Status } })
-      const { status, body } = await request(app.getHttpServer())
+      const { status } = await request(app.getHttpServer())
         .put('/reserve/tool/1')
         .send({ dateOfCollection, dateOfDevolution, mechanicName })
 
-      console.log(body)
       expect(status).toBe(204)
     })
 

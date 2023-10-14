@@ -8,8 +8,8 @@ describe('ReserveToolUseCase', () => {
   let sut: ReserveTool
   const toolsRepository = mock<LoadToolByIdRepository & UpdateToolRepository>()
   const { id, mechanicName, name, description, status } = toolsParams
-  const dateOfCollection = '2023-10-14'
-  const dateOfDevolution = '2023-10-28'
+  const dateOfCollection = '2024-10-14'
+  const dateOfDevolution = '2024-10-28'
   const StringId = String(id)
 
   beforeAll(() => {
@@ -42,7 +42,7 @@ describe('ReserveToolUseCase', () => {
   })
 
   it('should throw ValidationError if dateOfCollection and dateOfDevolution pass 15 days', async () => {
-    const promise = sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution: '2023-10-30', mechanicName })
+    const promise = sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution: '2025-10-30', mechanicName })
 
     await expect(promise).rejects.toThrow(new ValidationError('You can only reserve a tool for 15 days.'))
   })
