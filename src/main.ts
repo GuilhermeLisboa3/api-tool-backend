@@ -6,7 +6,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { AllExceptionsFilter } from './common/filters'
 
 prisma.$connect().then(() => {
-  NestFactory.create(AppModule).then(async app => {
+  NestFactory.create(AppModule, { cors: true }).then(async app => {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
     app.useGlobalFilters(new AllExceptionsFilter())
     await app.listen(3000)
