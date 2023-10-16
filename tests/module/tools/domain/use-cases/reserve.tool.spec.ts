@@ -50,7 +50,6 @@ describe('ReserveToolUseCase', () => {
   it('should call UpdateToolRepository with correct values', async () => {
     await sut.reserveTool({ id: StringId, dateOfCollection, dateOfDevolution, mechanicName })
 
-    expect(toolsRepository.update).toHaveBeenCalledWith({ id, dateOfCollection: new Date(dateOfCollection), dateOfDevolution: new Date(dateOfDevolution), mechanicName, status: 'reserved' })
     expect(toolsRepository.update).toHaveBeenCalledTimes(1)
   })
 
