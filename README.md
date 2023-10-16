@@ -11,7 +11,7 @@
 00. Put your credentials inside the `.env`;
 00. Run `npx prisma migrate dev` to run the migrations;
 00. Run `npm run start:dev` or `docker compose up` to run project;
-00. Go to `http://localhost:3000/` to open the documentation;
+00. Go to `http://localhost:3000/`;
 
 <br />
 
